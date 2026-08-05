@@ -1,11 +1,16 @@
 import { NavLink } from 'react-router';
-import CartIcon from '../assets/images/icons/cart-icon.png'
-import SearchIcon from '../assets/images/icons/search-icon.png'
-import WhiteLogo from '../assets/images/logo-white.png'
-import WhiteMobileLogo from '../assets/images/mobile-logo-white.png'
+import CartIcon from '../assets/images/icons/cart-icon.png';
+import SearchIcon from '../assets/images/icons/search-icon.png';
+import WhiteLogo from '../assets/images/logo-white.png';
+import WhiteMobileLogo from '../assets/images/mobile-logo-white.png';
 import './Header.css';
 
-export function Header() {
+export function Header({ cart }) {
+	let totalQuantity = cart.reduce(
+		(total, cartItem) => total + cartItem.quantity,
+		0,
+	);
+
 	return (
 		<>
 			<div className="header">
@@ -53,7 +58,7 @@ export function Header() {
 							className="cart-icon"
 							src={CartIcon}
 						/>
-						<div className="cart-quantity">3</div>
+						<div className="cart-quantity">{totalQuantity}</div>
 						<div className="cart-text">Cart</div>
 					</NavLink>
 				</div>
