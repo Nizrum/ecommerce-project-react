@@ -1,7 +1,7 @@
 import { Header } from '../components/Header';
 import './NotFoundPage.css';
 
-export function NotFoundPage() {
+export function NotFoundPage({ cart }) {
 	return (
 		<>
 			<link
@@ -11,7 +11,7 @@ export function NotFoundPage() {
 			/>
 			<title>Page not found</title>
 
-			<Header />
+			<Header cart={cart} />
 
 			<div className="not-found-text">
 				<span>Page not found...</span>
