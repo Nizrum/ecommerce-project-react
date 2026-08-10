@@ -209,3 +209,20 @@
   margin-top: 20px;
   margin-bottom: 19px;
 }
+
+.quantity-input {
+  display: none;
+  width: 50px;
+}
+
+.quantity-input.active {
+  display: inline-block;
+}
+
+.quantity-label {
+  display: none;
+}
+
+.quantity-label.active {
+  display: inline-block;
+}
