@@ -1,5 +1,7 @@
 import { NavLink, useNavigate, useSearchParams } from 'react-router';
 import { useState } from 'react';
+// import { useDispatch } from 'react-redux';
+// import { fetchProducts } from '../features/products/productsSlice';
 import CartIcon from '../assets/images/icons/cart-icon.png';
 import SearchIcon from '../assets/images/icons/search-icon.png';
 import WhiteLogo from '../assets/images/logo-white.png';
@@ -8,6 +10,7 @@ import './Header.css';
 
 export function Header({ cart }) {
 	const navigate = useNavigate();
+	// const dispatch = useDispatch();
 	const [searchParams] = useSearchParams();
 	const search = searchParams.get('search');
 	const [searchText, setSearchText] = useState(search || '');
@@ -23,6 +26,7 @@ export function Header({ cart }) {
 
 	const handleSearch = () => {
 		navigate(`/?search=${searchText}`);
+		// dispatch(fetchProducts({ searchText: searchText }));
 	};
 
 	return (
