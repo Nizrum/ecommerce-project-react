@@ -1,15 +1,15 @@
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { formatMoney } from '../../utils/money';
 import { useDispatch } from 'react-redux';
 import { loadCart } from '../../features/cart/cartSlice';
+import { createOrder } from '../../features/orders/ordersSlice';
 
 export function PaymentSummary({ paymentSummary }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const createOrder = async () => {
-		await axios.post('/api/orders');
+	const handleOrder = async () => {
+		dispatch(createOrder());
 		dispatch(loadCart());
 		navigate('/orders');
 	};
@@ -57,7 +57,7 @@ export function PaymentSummary({ paymentSummary }) {
 
 					<button
 						className="place-order-button button-primary"
-						onClick={createOrder}>
+						onClick={handleOrder}>
 						Place your order
 					</button>
 				</>
