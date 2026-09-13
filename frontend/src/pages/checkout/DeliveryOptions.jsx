@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { formatMoney } from '../../utils/money';
+import { useDispatch } from 'react-redux';
+import { loadCart } from '../../features/cart/cartSlice';
 
-export function DeliveryOptions({ deliveryOptions, cartItem, loadCart }) {
+export function DeliveryOptions({ deliveryOptions, cartItem }) {
+	const dispatch = useDispatch();
 	return (
 		<div className="delivery-options">
 			<div className="delivery-options-title">Choose a delivery option:</div>
@@ -15,11 +18,11 @@ export function DeliveryOptions({ deliveryOptions, cartItem, loadCart }) {
 
 				const updateDeliveryOption = async () => {
 					await axios.put(`/api/cart-items/${cartItem.productId}`, {
-						deliveryOptionId: deliveryOption.id
+						deliveryOptionId: deliveryOption.id,
 					});
 
-					await loadCart();
-				}
+					dispatch(loadCart());
+				};
 
 				return (
 					<div

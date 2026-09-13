@@ -1,18 +1,12 @@
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { Fragment } from 'react';
 import { Link } from 'react-router';
 import BuyAgainIcon from '../../assets/images/icons/buy-again.png';
+import { useDispatch } from 'react-redux';
+import { addCartItem } from '../../features/cart/cartSlice';
 
-export function OrderDetails({ order, loadCart }) {
-	const addToCart = async (productId) => {
-		await axios.post('/api/cart-items', {
-			productId,
-			quantity: 1,
-		});
-
-		await loadCart();
-	};
+export function OrderDetails({ order }) {
+	const dispatch = useDispatch();
 
 	return (
 		<div className="order-details-grid">
@@ -34,9 +28,14 @@ export function OrderDetails({ order, loadCart }) {
 							</div>
 							<button
 								className="buy-again-button button-primary"
-								onClick={async () => {
-									await addToCart(orderProduct.product.id);
-								}}>
+								onClick={() =>
+									dispatch(
+										addCartItem({
+											productId: orderProduct.product.id,
+											quantity: 1,
+										}),
+									)
+								}>
 								<img
 									className="buy-again-icon"
 									src={BuyAgainIcon}

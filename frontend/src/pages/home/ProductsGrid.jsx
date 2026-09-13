@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../features/products/productsSlice';
 
-export function ProductsGrid({ loadCart }) {
+export function ProductsGrid() {
 	const [searchParams] = useSearchParams();
 	const search = searchParams.get('search');
 	const products = useSelector((state) => state.products.products);
@@ -21,7 +21,6 @@ export function ProductsGrid({ loadCart }) {
 					<Product
 						key={product.id}
 						product={product}
-						loadCart={loadCart}
 					/>
 				);
 			})}

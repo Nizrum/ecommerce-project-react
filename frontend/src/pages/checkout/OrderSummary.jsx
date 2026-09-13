@@ -1,8 +1,10 @@
 import { DeliveryOptions } from './DeliveryOptions';
 import { DeliveryDate } from './DeliveryDate';
 import { CartItemDetails } from './CartItemDetails';
+import { useSelector } from 'react-redux';
 
-export function OrderSummary({ cart, deliveryOptions, loadCart }) {
+export function OrderSummary({ deliveryOptions }) {
+	const cart = useSelector((state) => state.cart.cartItems);
 	return (
 		<div className="order-summary">
 			{deliveryOptions.length > 0 &&
@@ -17,19 +19,18 @@ export function OrderSummary({ cart, deliveryOptions, loadCart }) {
 							/>
 
 							<div className="cart-item-details-grid">
-								<CartItemDetails
-									cartItem={cartItem}
-									loadCart={loadCart}
-								/>
+								<CartItemDetails cartItem={cartItem} />
 								<DeliveryOptions
 									deliveryOptions={deliveryOptions}
 									cartItem={cartItem}
-									loadCart={loadCart}
 								/>
 							</div>
 						</div>
 					);
 				})}
+			{cart.length == 0 && (
+				<div>Your cart is empty. Add some items to see them here.</div>
+			)}
 		</div>
 	);
 }

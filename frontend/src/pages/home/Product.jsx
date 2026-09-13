@@ -1,24 +1,20 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { formatMoney } from '../../utils/money';
 import CheckmarkIcon from '../../assets/images/icons/checkmark.png';
+import { useDispatch } from 'react-redux';
+import { addCartItem } from '../../features/cart/cartSlice';
 
-export function Product({ product, loadCart }) {
+export function Product({ product }) {
 	const [quantity, setQuantity] = useState(1);
 	const [isShowingAddedMessage, setIsShowingAddedMessage] = useState(false);
+	const dispatch = useDispatch();
 
 	const addToCart = async () => {
-		await axios.post('/api/cart-items', {
-			productId: product.id,
-			quantity,
-		});
-
+		dispatch(addCartItem({ productId: product.id, quantity }));
 		setIsShowingAddedMessage(true);
 		setTimeout(() => {
 			setIsShowingAddedMessage(false);
 		}, 2000);
-
-		await loadCart();
 	};
 
 	const selectQuantity = (event) => {
@@ -27,7 +23,9 @@ export function Product({ product, loadCart }) {
 	};
 
 	return (
-		<div className="product-container" data-testid="product-container">
+		<div
+			className="product-container"
+			data-testid="product-container">
 			<div className="product-image-container">
 				<img
 					className="product-image"

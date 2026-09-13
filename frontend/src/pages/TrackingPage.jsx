@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router';
 import { Header } from '../components/Header';
 import './TrackingPage.css';
 
-export function TrackingPage({ cart }) {
+export function TrackingPage() {
 	const { orderId, productId } = useParams();
 	const [order, setOrder] = useState(null);
 
@@ -31,9 +31,13 @@ export function TrackingPage({ cart }) {
 	const totalDeliveryTimeMs =
 		orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
 	const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
-	const deliveryProgressPercent = (timePassedMs / totalDeliveryTimeMs) > 1 ? 100 : (timePassedMs / totalDeliveryTimeMs) * 100;
+	const deliveryProgressPercent =
+		timePassedMs / totalDeliveryTimeMs > 1
+			? 100
+			: (timePassedMs / totalDeliveryTimeMs) * 100;
 	const isPreparing = deliveryProgressPercent < 33;
-	const isShipping = deliveryProgressPercent >= 33 && deliveryProgressPercent < 100;
+	const isShipping =
+		deliveryProgressPercent >= 33 && deliveryProgressPercent < 100;
 	const isDelivered = deliveryProgressPercent === 100;
 
 	return (
@@ -45,7 +49,7 @@ export function TrackingPage({ cart }) {
 			/>
 			<title>Tracking</title>
 
-			<Header cart={cart} />
+			<Header />
 
 			<div className="tracking-page">
 				<div className="order-tracking">
@@ -72,13 +76,24 @@ export function TrackingPage({ cart }) {
 					/>
 
 					<div className="progress-labels-container">
-						<div className={`progress-label ${isPreparing && "current-status"}`}>Preparing</div>
-						<div className={`progress-label ${isShipping && "current-status"}`}>Shipped</div>
-						<div className={`progress-label ${isDelivered && "current-status"}`}>Delivered</div>
+						<div
+							className={`progress-label ${isPreparing && 'current-status'}`}>
+							Preparing
+						</div>
+						<div
+							className={`progress-label ${isShipping && 'current-status'}`}>
+							Shipped
+						</div>
+						<div
+							className={`progress-label ${isDelivered && 'current-status'}`}>
+							Delivered
+						</div>
 					</div>
 
 					<div className="progress-bar-container">
-						<div className="progress-bar" style={{width: `${deliveryProgressPercent}%`}}></div>
+						<div
+							className="progress-bar"
+							style={{ width: `${deliveryProgressPercent}%` }}></div>
 					</div>
 				</div>
 			</div>

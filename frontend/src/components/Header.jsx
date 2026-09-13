@@ -1,16 +1,15 @@
 import { NavLink, useNavigate, useSearchParams } from 'react-router';
 import { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { fetchProducts } from '../features/products/productsSlice';
+import { useSelector } from 'react-redux';
 import CartIcon from '../assets/images/icons/cart-icon.png';
 import SearchIcon from '../assets/images/icons/search-icon.png';
 import WhiteLogo from '../assets/images/logo-white.png';
 import WhiteMobileLogo from '../assets/images/mobile-logo-white.png';
 import './Header.css';
 
-export function Header({ cart }) {
+export function Header() {
 	const navigate = useNavigate();
-	// const dispatch = useDispatch();
+	const cart = useSelector((state) => state.cart.cartItems);
 	const [searchParams] = useSearchParams();
 	const search = searchParams.get('search');
 	const [searchText, setSearchText] = useState(search || '');
@@ -26,7 +25,6 @@ export function Header({ cart }) {
 
 	const handleSearch = () => {
 		navigate(`/?search=${searchText}`);
-		// dispatch(fetchProducts({ searchText: searchText }));
 	};
 
 	return (
