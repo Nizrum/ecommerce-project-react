@@ -1,7 +1,16 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import type { Order } from '../../types';
 
-const initialState = {
+export interface OrdersState {
+	orders: Order[];
+	loading: boolean;
+	error: string;
+	createOrderLoading: boolean;
+	createOrderError: string;
+}
+
+const initialState: OrdersState = {
 	orders: [],
 	loading: false,
 	error: '',
@@ -9,22 +18,30 @@ const initialState = {
 	createOrderError: '',
 };
 
-export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
-	const response = await axios.get('/api/orders?expand=products');
-	return response.data;
-});
+export const fetchOrders = createAsyncThunk<Order[]>(
+	'orders/fetchOrders',
+	async () => {
+		const response = await axios.get<Order[]>('/api/orders?expand=products');
+		return response.data;
+	},
+);
 
-export const createOrder = createAsyncThunk('orders/createOrder', async () => {
-	const response = await axios.post('/api/orders');
-	return response.data;
-});
+export const createOrder = createAsyncThunk<Order>(
+	'orders/createOrder',
+	async () => {
+		const response = await axios.post<Order>('/api/orders');
+		return response.data;
+	},
+);
 
 const ordersSlice = createSlice({
 	name: 'orders',
 	initialState,
+	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(fetchOrders.pending, (state) => {
 			state.loading = true;
+			state.error = '';
 		});
 		builder.addCase(fetchOrders.fulfilled, (state, action) => {
 			state.loading = false;
@@ -32,17 +49,19 @@ const ordersSlice = createSlice({
 		});
 		builder.addCase(fetchOrders.rejected, (state, action) => {
 			state.loading = false;
-			state.error = action.error.message;
+			state.error = action.error.message ?? 'Failed to fetch orders';
 		});
 		builder.addCase(createOrder.pending, (state) => {
 			state.createOrderLoading = true;
+			state.createOrderError = '';
 		});
 		builder.addCase(createOrder.fulfilled, (state) => {
 			state.createOrderLoading = false;
 		});
 		builder.addCase(createOrder.rejected, (state, action) => {
 			state.createOrderLoading = false;
-			state.createOrderError = action.error.message;
+			state.createOrderError =
+				action.error.message ?? 'Failed to create order';
 		});
 	},
 });

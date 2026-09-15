@@ -1,17 +1,30 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import type { Product } from '../../types';
 
-const initialState = {
+interface FetchProductsParams {
+	searchText: string;
+}
+
+export interface ProductsState {
+	products: Product[];
+	loading: boolean;
+	error: string;
+}
+
+const initialState: ProductsState = {
 	products: [],
 	loading: false,
 	error: '',
 };
 
-export const fetchProducts = createAsyncThunk(
+export const fetchProducts = createAsyncThunk<Product[], FetchProductsParams>(
 	'products/fetchProducts',
 	async (params) => {
-		const query = params?.searchText?.trim() ? `?search=${encodeURIComponent(params.searchText.trim())}` : '';
-		const response = await axios.get(`/api/products${query}`);
+		const query = params?.searchText?.trim()
+			? `?search=${encodeURIComponent(params.searchText.trim())}`
+			: '';
+		const response = await axios.get<Product[]>(`/api/products${query}`);
 		return response.data;
 	},
 );
@@ -19,6 +32,7 @@ export const fetchProducts = createAsyncThunk(
 const productsSlice = createSlice({
 	name: 'products',
 	initialState,
+	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(fetchProducts.pending, (state) => {
 			state.loading = true;
@@ -29,7 +43,7 @@ const productsSlice = createSlice({
 		});
 		builder.addCase(fetchProducts.rejected, (state, action) => {
 			state.loading = false;
-			state.error = action.error.message;
+			state.error = action.error.message ?? 'Failed to fetch products';
 		});
 	},
 });
