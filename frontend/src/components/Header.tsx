@@ -1,15 +1,15 @@
 import { NavLink, useNavigate, useSearchParams } from 'react-router';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, type ChangeEvent } from 'react';
 import CartIcon from '../assets/images/icons/cart-icon.png';
 import SearchIcon from '../assets/images/icons/search-icon.png';
 import WhiteLogo from '../assets/images/logo-white.png';
 import WhiteMobileLogo from '../assets/images/mobile-logo-white.png';
 import './Header.css';
+import { useAppSelector } from '../app/hooks';
 
 export function Header() {
 	const navigate = useNavigate();
-	const cart = useSelector((state) => state.cart.cartItems);
+	const cart = useAppSelector((state) => state.cart.cartItems);
 	const [searchParams] = useSearchParams();
 	const search = searchParams.get('search');
 	const [searchText, setSearchText] = useState(search || '');
@@ -19,7 +19,7 @@ export function Header() {
 		0,
 	);
 
-	const handleSearchBarInput = (event) => {
+	const handleSearchBarInput = (event: ChangeEvent<HTMLInputElement>) => {
 		setSearchText(event.target.value);
 	};
 
