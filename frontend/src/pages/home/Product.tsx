@@ -1,23 +1,34 @@
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { formatMoney } from '../../utils/money';
 import CheckmarkIcon from '../../assets/images/icons/checkmark.png';
-import { useDispatch } from 'react-redux';
 import { addCartItem } from '../../features/cart/cartSlice';
+import type { Product } from '../../types';
+import { useAppDispatch } from '../../app/hooks';
 
-export function Product({ product }) {
+interface ProductProps {
+	product: Product;
+}
+
+export function Product({ product }: ProductProps) {
 	const [quantity, setQuantity] = useState(1);
 	const [isShowingAddedMessage, setIsShowingAddedMessage] = useState(false);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const addToCart = async () => {
-		dispatch(addCartItem({ productId: product.id, quantity }));
-		setIsShowingAddedMessage(true);
-		setTimeout(() => {
-			setIsShowingAddedMessage(false);
-		}, 2000);
+		try {
+			await dispatch(
+				addCartItem({ productId: product.id, quantity }),
+			).unwrap();
+			setIsShowingAddedMessage(true);
+			setTimeout(() => {
+				setIsShowingAddedMessage(false);
+			}, 2000);
+		} catch (error) {
+			console.error('Failed to add to cart:', error);
+		}
 	};
 
-	const selectQuantity = (event) => {
+	const selectQuantity = (event: ChangeEvent<HTMLSelectElement>) => {
 		const quantitySelected = Number(event.target.value);
 		setQuantity(quantitySelected);
 	};

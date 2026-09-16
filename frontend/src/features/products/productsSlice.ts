@@ -21,8 +21,9 @@ const initialState: ProductsState = {
 export const fetchProducts = createAsyncThunk<Product[], FetchProductsParams>(
 	'products/fetchProducts',
 	async (params) => {
-		const query = params?.searchText?.trim()
-			? `?search=${encodeURIComponent(params.searchText.trim())}`
+		const searchText = params.searchText.trim();
+		const query = searchText
+			? `?search=${encodeURIComponent(searchText)}`
 			: '';
 		const response = await axios.get<Product[]>(`/api/products${query}`);
 		return response.data;

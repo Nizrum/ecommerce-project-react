@@ -1,14 +1,14 @@
 import { Product } from './Product';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../features/products/productsSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export function ProductsGrid() {
 	const [searchParams] = useSearchParams();
-	const search = searchParams.get('search');
-	const products = useSelector((state) => state.products.products);
-	const dispatch = useDispatch();
+	const search = searchParams.get('search') ?? '';
+	const products = useAppSelector((state) => state.products.products);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(fetchProducts({ searchText: search }));
