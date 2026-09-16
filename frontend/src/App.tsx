@@ -6,11 +6,11 @@ import { OrdersPage } from './pages/orders/OrdersPage';
 import { TrackingPage } from './pages/TrackingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './App.css';
-import { useDispatch } from 'react-redux';
 import { loadCart } from './features/cart/cartSlice';
+import { useAppDispatch } from './app/hooks';
 
 function App() {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(loadCart());
