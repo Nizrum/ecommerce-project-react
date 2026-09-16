@@ -4,14 +4,15 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 import { Header } from '../components/Header';
 import './TrackingPage.css';
+import type { Order } from '../types';
 
 export function TrackingPage() {
 	const { orderId, productId } = useParams();
-	const [order, setOrder] = useState(null);
+	const [order, setOrder] = useState<Order | null>(null);
 
 	useEffect(() => {
 		const fetchTrackingData = async () => {
-			const orderResponse = await axios.get(
+			const orderResponse = await axios.get<Order>(
 				`/api/orders/${orderId}?expand=products`,
 			);
 			setOrder(orderResponse.data);
@@ -27,6 +28,33 @@ export function TrackingPage() {
 	const orderProduct = order.products.find((orderProduct) => {
 		return orderProduct.productId === productId;
 	});
+
+	if (!orderProduct) {
+		return (
+			<>
+				<link
+					rel="icon"
+					type="image/svg+xml"
+					href="/tracking-favicon.png"
+				/>
+				<title>Tracking</title>
+
+				<Header />
+
+				<div className="tracking-page">
+					<div className="order-tracking">
+						<Link
+							className="back-to-orders-link link-primary"
+							to="/orders">
+							View all orders
+						</Link>
+
+						<div className="delivery-date">Product not found...</div>
+					</div>
+				</div>
+			</>
+		);
+	}
 
 	const totalDeliveryTimeMs =
 		orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;

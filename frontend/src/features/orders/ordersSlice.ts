@@ -26,11 +26,10 @@ export const fetchOrders = createAsyncThunk<Order[]>(
 	},
 );
 
-export const createOrder = createAsyncThunk<Order>(
+export const createOrder = createAsyncThunk(
 	'orders/createOrder',
 	async () => {
-		const response = await axios.post<Order>('/api/orders');
-		return response.data;
+		await axios.post('/api/orders');
 	},
 );
 

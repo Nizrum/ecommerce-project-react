@@ -41,8 +41,8 @@ export interface PaymentSummary {
 export interface OrderProduct {
 	productId: string;
 	quantity: number;
-	estimatedDeliveryTime: number;
-	product?: Product;
+	estimatedDeliveryTimeMs: number;
+	product: Product;
 }
 
 export interface Order {
