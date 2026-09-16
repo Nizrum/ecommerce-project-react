@@ -54,11 +54,12 @@ export function Header() {
 						onChange={handleSearchBarInput}
 					/>
 
-					<button className="search-button">
+					<button
+						className="search-button"
+						onClick={handleSearch}>
 						<img
 							className="search-icon"
 							src={SearchIcon}
-							onClick={handleSearch}
 						/>
 					</button>
 				</div>
