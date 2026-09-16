@@ -3,10 +3,10 @@ import CheckoutLockIcon from '../../assets/images/icons/checkout-lock-icon.png';
 import Logo from '../../assets/images/logo.png';
 import MobileLogo from '../../assets/images/mobile-logo.png';
 import './CheckoutHeader.css';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 
 export function CheckoutHeader() {
-	const cart = useSelector((state) => state.cart.cartItems);
+	const cart = useAppSelector((state) => state.cart.cartItems);
 	let totalQuantity = cart.reduce(
 		(total, cartItem) => total + cartItem.quantity,
 		0,

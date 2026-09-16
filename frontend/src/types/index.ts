@@ -23,7 +23,7 @@ export interface CartItem {
 export interface DeliveryOption {
 	id: string;
 	deliveryDays: number;
-	estimatedDeliveryTime: number;
+	estimatedDeliveryTimeMs: number;
 	priceCents: number;
 	createdAt: string;
 	updatedAt: string;

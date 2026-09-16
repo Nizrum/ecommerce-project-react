@@ -1,18 +1,37 @@
 import { useNavigate } from 'react-router';
 import { formatMoney } from '../../utils/money';
-import { useDispatch } from 'react-redux';
 import { loadCart } from '../../features/cart/cartSlice';
 import { createOrder } from '../../features/orders/ordersSlice';
+import type { PaymentSummary as PaymentSummaryType } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-export function PaymentSummary({ paymentSummary }) {
+interface PaymentSummaryProps {
+	paymentSummary: PaymentSummaryType | null;
+}
+
+export function PaymentSummary({ paymentSummary }: PaymentSummaryProps) {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
+	const loading = useAppSelector((state) => state.cart.paymentSummaryLoading);
+	const error = useAppSelector((state) => state.cart.paymentSummaryError);
 
 	const handleOrder = async () => {
-		dispatch(createOrder());
-		dispatch(loadCart());
+		await dispatch(createOrder()).unwrap();
+		await dispatch(loadCart()).unwrap();
 		navigate('/orders');
 	};
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <div>Error: {error}</div>;
+	}
+
+	if (!paymentSummary) {
+		return null;
+	}
 
 	return (
 		<div className="payment-summary">

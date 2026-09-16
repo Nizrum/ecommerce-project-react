@@ -1,10 +1,15 @@
 import { DeliveryOptions } from './DeliveryOptions';
 import { DeliveryDate } from './DeliveryDate';
 import { CartItemDetails } from './CartItemDetails';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import type { DeliveryOption } from '../../types';
 
-export function OrderSummary({ deliveryOptions }) {
-	const cart = useSelector((state) => state.cart.cartItems);
+interface OrderSummaryProps {
+	deliveryOptions: DeliveryOption[];
+}
+
+export function OrderSummary({ deliveryOptions }: OrderSummaryProps) {
+	const cart = useAppSelector((state) => state.cart.cartItems);
 	return (
 		<div className="order-summary">
 			{deliveryOptions.length > 0 &&

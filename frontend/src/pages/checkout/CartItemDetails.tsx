@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useState, type ChangeEvent, type KeyboardEvent } from 'react';
 import { formatMoney } from '../../utils/money';
-import { useDispatch } from 'react-redux';
 import {
 	deleteCartItem,
 	updateCartItemQuantity,
 } from '../../features/cart/cartSlice';
+import { useAppDispatch } from '../../app/hooks';
+import type { CartItem } from '../../types';
 
-export function CartItemDetails({ cartItem }) {
-	const dispatch = useDispatch();
+interface CartItemDetailsProps {
+	cartItem: CartItem;
+}
+
+export function CartItemDetails({ cartItem }: CartItemDetailsProps) {
+	const dispatch = useAppDispatch();
 	const [isUpdatingQuantity, setIsUpdatingQuantity] = useState(false);
 	const [quantity, setQuantity] = useState(cartItem.quantity);
 
-	const updateQuantity = async () => {
+	const updateQuantity = () => {
 		if (isUpdatingQuantity === true) {
 			dispatch(
 				updateCartItemQuantity({ productId: cartItem.productId, quantity }),
@@ -20,11 +25,11 @@ export function CartItemDetails({ cartItem }) {
 		setIsUpdatingQuantity(!isUpdatingQuantity);
 	};
 
-	const changeQuantity = (event) => {
-		setQuantity(event.target.value);
+	const changeQuantity = (event: ChangeEvent<HTMLInputElement>) => {
+		setQuantity(Number(event.target.value));
 	};
 
-	const handleKeyPress = (event) => {
+	const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter') {
 			updateQuantity();
 		} else if (event.key === 'Escape') {
@@ -49,14 +54,14 @@ export function CartItemDetails({ cartItem }) {
 					<span>
 						Quantity:{' '}
 						<input
-							className={`quantity-input ${isUpdatingQuantity && 'active'}`}
+							className={`quantity-input ${isUpdatingQuantity ? 'active' : ''}`}
 							type="text"
 							value={quantity}
 							onChange={changeQuantity}
 							onKeyDown={handleKeyPress}
 						/>
 						<span
-							className={`quantity-label ${!isUpdatingQuantity && 'active'}`}>
+							className={`quantity-label ${!isUpdatingQuantity ? 'active' : ''}`}>
 							{cartItem.quantity}
 						</span>
 					</span>

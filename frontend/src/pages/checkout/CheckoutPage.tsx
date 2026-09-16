@@ -3,14 +3,14 @@ import { CheckoutHeader } from './CheckoutHeader';
 import { OrderSummary } from './OrderSummary';
 import { PaymentSummary } from './PaymentSummary';
 import './CheckoutPage.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryOptions, fetchPaymentSummary } from '../../features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export function CheckoutPage() {
-	const dispatch = useDispatch();
-	const cart = useSelector((state) => state.cart.cartItems);
-	const paymentSummary = useSelector((state) => state.cart.paymentSummary);
-	const deliveryOptions = useSelector((state) => state.cart.deliveryOptions);
+	const dispatch = useAppDispatch();
+	const cart = useAppSelector((state) => state.cart.cartItems);
+	const paymentSummary = useAppSelector((state) => state.cart.paymentSummary);
+	const deliveryOptions = useAppSelector((state) => state.cart.deliveryOptions);
 
 	useEffect(() => {
 		dispatch(fetchDeliveryOptions());
