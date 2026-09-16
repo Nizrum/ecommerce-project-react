@@ -2,11 +2,16 @@ import dayjs from 'dayjs';
 import { Fragment } from 'react';
 import { Link } from 'react-router';
 import BuyAgainIcon from '../../assets/images/icons/buy-again.png';
-import { useDispatch } from 'react-redux';
 import { addCartItem } from '../../features/cart/cartSlice';
+import type { Order } from '../../types';
+import { useAppDispatch } from '../../app/hooks';
 
-export function OrderDetails({ order }) {
-	const dispatch = useDispatch();
+interface OrderDetailsProps {
+	order: Order;
+}
+
+export function OrderDetails({ order }: OrderDetailsProps) {
+	const dispatch = useAppDispatch();
 
 	return (
 		<div className="order-details-grid">
